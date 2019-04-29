@@ -15,7 +15,7 @@ Architecture
 =========================
 WAMR is basically consist of three portions, WASM runtime engine, memory management, messaging and micro service support module.
 
-<img src="./pics/architecture.PNG" width="60%" height="60%">
+<img src="./pics/architecture.PNG" width="80%" height="80%">
 
 
 
@@ -43,6 +43,19 @@ Subscription model
 -------------------------
 The micro service model is also referred as monitor model. One WASM app acts as the event broadcastor. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
 <img src="./pics/sub.PNG" width="60%" height="60%">
+
+Use case on sensor hub firmeware
+-------------------------
+Programmers follow below steps to finish their app development:
+- write WASM app code for firmware using C/C++ or other languages
+- compile and test
+- pack host app and WSAM app
+- deploy in host
+- host app installs WASM app onto device
+- WASM app filters and fuses sensor events and provide UI display and interaction
+<img src="./pics/workflow.PNG">
+
+
 
 Security
 =========================
