@@ -127,7 +127,9 @@ For Zephyr, execute ```ninja run```.
 For AliOS, exeute ```./out/helloworld@linuxhost/binary/helloworld@linuxhost.elf```.
 
 As to Zephyr, AliOS and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
-(Extension samples will be provided soon)
+For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx)
+
+(WAMR extension samples will be open sourced soon)
 
 Extend WAMR to an open app framework 
 =========================
@@ -200,7 +202,7 @@ Subscription model
 The micro service model is also referred as monitor model. One WASM app acts as the event broadcaster. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
 <img src="./pics/sub.PNG" width="60%" height="60%">
 
-Below is the sample code for pub WASM app which utilized a timer to repeat publish an overheat event to the subscriber apps. Subscriber apps receive the events immediately.
+Below is the sample code for a WASM publisher app which utilized a timer to repeat publish an overheat event to the subscriber apps. Subscriber apps receive the events immediately.
 
 ``` C
 void on_init() 
@@ -242,7 +244,7 @@ void on_init()
 ```
 
 
-Use case on sensor hub firmware
+A open app framework usage scenario
 -------------------------
 Sensor hub firmware is an Intel companion chip connected with tons of sensors. It has limited resources and works in always on mode during main processor (host side) in deep sleep. WAMR is ported in sensor hub companion chip to make it intelligent to interact with end users according to environment changes, 7 days and 24 hours.
 Programmers follow below steps to finish their app development:
