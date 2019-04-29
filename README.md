@@ -109,8 +109,9 @@ If you would like to run test app on Zephyr, we have embedded test sample into i
 ninja run
 ```
 
-As to Zephyr and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
-For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx).
+As to Zephyr and other embedded platforms or IoT platforms, we highly recommand to integrate WAMR into your own framework such as dynamic app loading framework which loads WASM apps from host or cloud and execute them inside WAMR.
+WAMR provided methodology and APIs which makes the extension easy. 
+For complete WAMR integration and extension methodology, please read [WAMR integration and extension guide](docs/iwasm_user_guide.docx).
 
 (WAMR extension samples will be open sourced soon)
 
