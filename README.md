@@ -111,7 +111,7 @@ ninja run
 
 As to Zephyr and other embedded platforms or IoT platforms, we highly recommand to integrate WAMR into your own framework such as dynamic app loading framework which loads WASM apps from host or cloud and execute them inside WAMR.
 WAMR provided methodology and APIs which makes the extension easy. 
-For complete WAMR integration and extension methodology, please read [WAMR integration and extension guide](docs/iwasm_user_guide.docx).
+For complete WAMR integration and extension methodology, please read [WAMR integration and extension guide](docs/WAMR_integration_extension_guide.docx).
 
 (WAMR extension samples will be open sourced soon)
 
