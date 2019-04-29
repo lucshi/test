@@ -201,7 +201,7 @@ void overheat_handler(request_t *event)
  printf(“Event: %s\n", event->url);
 }
 
-/* Timer callback */
+// Timer callback
 void timer_update(user_timer_t timer) 
 {
   attr_container_t *event;
