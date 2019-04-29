@@ -12,7 +12,7 @@ Feature
 
 Architecture
 =========================
-![architecture](https://raw.github.com/lucshi/test/pics/architecture.png)
+![](./pics/architecture.PNG)
 
 Run 
 =========================
