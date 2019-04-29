@@ -188,6 +188,7 @@ The micro service model is also referred as monitor model. One WASM app acts as 
 Below is the sample code for a WASM publisher app which utilized a timer to repeat publish an overheat event to the subscriber apps. Subscriber apps receive the events immediately.
 
 ``` C
+/* Subscriber app */
 void on_init() 
 {
   api_subscribe_event (" alert/overheat", overheat_handler);
@@ -200,8 +201,10 @@ void overheat_handler(request_t *event)
 {
  printf(“Event: %s\n", event->url);
 }
-
-void timer_update(user_timer_t timer) 
+```
+/* Publisher app */
+```
+void timer_update(user_timer_t timer)
 {
   attr_container_t *event;
   printf("Timer update %d\n", num++);
@@ -218,6 +221,7 @@ void timer_update(user_timer_t timer)
 
   attr_container_destroy(event);
 }
+
 void on_init() 
 {
     user_timer_t timer;
