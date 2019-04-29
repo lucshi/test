@@ -36,10 +36,13 @@ After extention, WAMR supports two typical programming models, micro service mod
 
 Micro service model
 -------------------------
+The micro service model is also referred as request and response model. One WASM app acts as server app which provides a specific service. Other WASM apps or host/cloud apps request from that service and get response.
+![](./pics/request.PNG)
 
 Subscription model
 -------------------------
-
+The micro service model is also referred as monitor model. One WASM app acts as the event broadcastor. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
+![](./pics/sub.PNG)
 
 Security
 =========================
