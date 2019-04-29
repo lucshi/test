@@ -114,7 +114,7 @@ For complete extension methodology, please read [WAMR extension guide](docs/iwas
 
 (WAMR extension samples will be open sourced soon)
 
-Extend WAMR to an open app framework 
+Integrate WAMR into the app framework 
 =========================
 WAMR defined methodology and APIs to extend its library, support app managment, extend to more language suppport, and enabled on more platforms.
 A typical extension architecture is as below:
@@ -125,7 +125,7 @@ A typical extension architecture is as below:
 <img src="./pics/architecture_extend.PNG" width="120%" height="120%">
 
 
-Programming models after extension
+Programming models after integration
 =========================
 After extension, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations. 
 - Single thread per WASM app instance
@@ -230,7 +230,7 @@ void on_init()
 ```
 
 
-Extension sample: dynamic app framework
+Typical dynamic app framework workflow
 -------------------------
 Sensor hub firmware is an Intel companion chip connected with tons of sensors. It has limited resources and works in always on mode during main processor (host side) in deep sleep. WAMR is ported in sensor hub companion chip to make it intelligent to interact with end users according to environment changes, 7 days and 24 hours.
 Programmers follow below steps to finish their app development:
