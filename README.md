@@ -13,6 +13,8 @@ Feature
 
 Architecture
 =========================
+WAMR is basically consist of three portions, WASM runtime engine, memory management, messaging and micro service support module.
+
 ![](./pics/architecture.PNG)
 
 
@@ -31,6 +33,7 @@ A typical extention architecure is as below:
 Program models 
 =========================
 After extention, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations.
+
 Micro service model
 -------------------------
 
