@@ -135,7 +135,7 @@ For AliOS, exeute
 ```
 
 As to Zephyr, AliOS and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
-For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx)
+For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx).
 
 (WAMR extension samples will be open sourced soon)
 
