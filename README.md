@@ -144,7 +144,7 @@ Programmers follow below steps to finish their app development:
 <img src="./pics/workflow.PNG">
 
 
-Discussing
+Submit issues and request
 =========================
-- [Click here to submit issues and requests. Your feedback is always welcome](https://github.com/lucshi/test/issues/new)
+[Click here to submit. Your feedback is always welcome!](https://github.com/lucshi/test/issues/new)
 
