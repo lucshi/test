@@ -124,8 +124,15 @@ buf ptr: 0x000101ac
 buf: 1234
 ```
 If you would like to run test app on AliOS or Zephyr, we have embedded test sample into their OS image.
-For Zephyr, execute ```ninja run```.
-For AliOS, exeute ```./out/helloworld@linuxhost/binary/helloworld@linuxhost.elf```.
+For Zephyr, execute 
+```
+ninja run
+```
+
+For AliOS, exeute
+```
+./out/helloworld@linuxhost/binary/helloworld@linuxhost.elf
+```
 
 As to Zephyr, AliOS and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
 For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx)
