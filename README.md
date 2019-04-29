@@ -254,8 +254,7 @@ Programmers follow below steps to finish their app development:
 - WASM app filters and fuses sensor events and provide UI display and interaction
 <img src="./pics/workflow.PNG">
 
-Submit issues and request
-=========================
+
 Submit issues and request
 =========================
 [Click here to submit. Your feedback is always welcome!](https://github.com/lucshi/test/issues/new)
