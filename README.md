@@ -30,19 +30,19 @@ A typical extention architecure is as below:
 
 ![](./pics/architecture_extend.PNG)
 
-Program models 
+Programming models 
 =========================
 After extention, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations.
 
 Micro service model
 -------------------------
 The micro service model is also referred as request and response model. One WASM app acts as server app which provides a specific service. Other WASM apps or host/cloud apps request from that service and get response.
-![](./pics/request.PNG)
+![](./pics/request.PNG|width=50)
 
 Subscription model
 -------------------------
 The micro service model is also referred as monitor model. One WASM app acts as the event broadcastor. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
-![](./pics/sub.PNG)
+![](./pics/sub.PNG|width=50)
 
 Security
 =========================
