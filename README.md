@@ -230,7 +230,7 @@ void on_init()
 ```
 
 
-A open app framework usage scenario
+A usage scenario using dynamic app framework
 -------------------------
 Sensor hub firmware is an Intel companion chip connected with tons of sensors. It has limited resources and works in always on mode during main processor (host side) in deep sleep. WAMR is ported in sensor hub companion chip to make it intelligent to interact with end users according to environment changes, 7 days and 24 hours.
 Programmers follow below steps to finish their app development:
