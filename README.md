@@ -146,5 +146,5 @@ Programmers follow below steps to finish their app development:
 
 Discussing
 =========================
-[Please submit issues, request or concerns at](https://github.com/lucshi/test/issues/new)
+- [Click here to submit issues and requests. Your feedback is always welcome](https://github.com/lucshi/test/issues/new)
 
