@@ -1,10 +1,10 @@
 WebAssembly Micro Runtime
 =========================
-WebAssembly Micro Runtime (WAMR) is a small footprint standalone WebAssembly(WASM) runtime. By default it support running WASM binary on resource restricted (low as 150KB total memory) devices.
+WebAssembly Micro Runtime (WAMR) is a small footprint and standalone WebAssembly (WASM) runtime. By default it supports running WASM binary on resource restricted (low as 150KB total memory) devices.
 
 Feature
 =========================
-- Support programming fw apps in multi languages (C/C++/Java/Rust/Go/TypeScript etc)
+- Support programming firmware apps in multi languages (C/C++/Java/Rust/Go/TypeScript etc.)
 - App sandbox execution environment on embedded OS
 - Pure asynchronized communication
 - Menu configuration for easy platform integration
@@ -21,18 +21,18 @@ WAMR is basically consist of three portions, WASM runtime engine, memory managem
 
 Extension 
 =========================
-WAMR defined methodology and APIs to extend library, support app managment, extend to more language supppr, and enabled on more platforms.
-A typical extention architecure is as below:
+WAMR defined methodology and APIs to extend library, support app managment, extend to more language suppport, and enabled on more platforms.
+A typical extension architecture is as below:
 
 - App manager is the component to install and uninstall WASM apps from host or cloud.
 - Communication is enabled inter WASM app as well as between WASM app and host/cloud
-- Runtime glue and API extention is a layer to easily integrate other runtime, e.g. Jerryscript, Intel Java micro runtime and Lua runtime etc. into WAMR
+- Runtime glue and API extension is a layer to easily integrate other runtime, e.g. Jerryscript, Intel Java micro runtime and Lua runtime etc. into WAMR
 <img src="./pics/architecture_extend.PNG" width="120%" height="120%">
 
 
 Programming models 
 =========================
-After extention, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations. 
+After extension, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations. 
 - Single thread per WASM app instance
 - Event driven model
 - App must implement system callbacks on_init and on_destrory
@@ -47,7 +47,7 @@ Micro service model
 The micro service model is also referred as request and response model. One WASM app acts as server app which provides a specific service. Other WASM apps or host/cloud apps request from that service and get response.
 <img src="./pics/request.PNG" width="60%" height="60%">
 
-Below is the sample code for server WASM app which provide a room temperature measurement service. In this demo case, it always returns 26.5 centigrades.
+Below is the sample code for server WASM app which provide a room temperature measurement service. In this demo case, it always returns 26.5 centigrade.
 
 ``` C
 void on_init() 
@@ -87,10 +87,10 @@ void room_temp_handler(request_t *request)
 
 Subscription model
 -------------------------
-The micro service model is also referred as monitor model. One WASM app acts as the event broadcastor. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
+The micro service model is also referred as monitor model. One WASM app acts as the event broadcaster. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
 <img src="./pics/sub.PNG" width="60%" height="60%">
 
-Below is the sample code for pub WASM app which utilized a timer to repeatly publish an overheat event to the subcriber apps. Subscriber apps receive the events immediately.
+Below is the sample code for pub WASM app which utilized a timer to repeat publish an overheat event to the subscriber apps. Subscriber apps receive the events immediately.
 
 ``` C
 void on_init() 
@@ -132,8 +132,9 @@ void on_init()
 ```
 
 
-Use case on sensor hub firmeware
+Use case on sensor hub firmware
 -------------------------
+Sensor hub firmware is an Intel companion chip connected with tons of sensors. It has limited resources and works in always on mode during main processor (host side) in deep sleep. WAMR is ported in sensor hub companion chip to make it intelligent to interact with end users according to environment changes, 7 days and 24 hours.
 Programmers follow below steps to finish their app development:
 - write WASM app code for firmware using C/C++ or other languages
 - compile and test
