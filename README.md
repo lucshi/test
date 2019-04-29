@@ -144,11 +144,7 @@ Programmers follow below steps to finish their app development:
 <img src="./pics/workflow.PNG">
 
 
-
-Security
-=========================
-
 Discussing
 =========================
-- [submit issue](https://github.com/meolu/walle-web/issues/new)
+[Please submit issues, request or concerns at](https://github.com/lucshi/test/issues/new)
 
