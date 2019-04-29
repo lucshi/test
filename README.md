@@ -42,7 +42,7 @@ ln -s <iwam_dir> iwasm
 ln -s <shared_lib_dir> shared-lib
 mkdir build && cd build
 source ../../../zephyr-env.sh
-cmake -GNinja -DBOARD=qemu_x86_nommu ..
+cmake -GNinja -DBOARD=qemu_x86 ..
 ninja
 ```
 AliOS
@@ -52,6 +52,7 @@ You need download AliOS source code first and embeded WAMR into it.
 git clone https://github.com/alibaba/AliOS-Things.git
 cp -a <iwasm_dir>/products/alios-things middleware/iwasm
 ln -s <iwasm_dir> middleware/iwasm/iwasm
+ln -s <shared-lib_dir> middle/iwasm/shared-lib
 ```
 modify file ```app/example/helloworld/helloworld.c```, in the beginning of function ```application_start()```, add
 ``` C
