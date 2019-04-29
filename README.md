@@ -45,25 +45,6 @@ source ../../../zephyr-env.sh
 cmake -GNinja -DBOARD=qemu_x86 ..
 ninja
 ```
-AliOS
--------------------------
-You need download AliOS source code first and embeded WAMR into it.
-``` Bash
-git clone https://github.com/alibaba/AliOS-Things.git
-cp -a <iwasm_dir>/products/alios-things middleware/iwasm
-ln -s <iwasm_dir> middleware/iwasm/iwasm
-ln -s <shared-lib_dir> middle/iwasm/shared-lib
-```
-modify file ```app/example/helloworld/helloworld.c```, in the beginning of function ```application_start()```, add
-``` C
-bool iwasm_init(void);
-iwasm_init();
-```
-modify file ```app/example/helloworld/helloworld.mk```, change
-```$(NAME)_COMPONENTS := yloop cli``` to ```$(NAME)_COMPONENTS := yloop cli iwasm```, and then build source code
-``` Bash
-aos make helloworld@linuxhost
-```
 
 Build WASM app
 =========================
@@ -123,18 +104,12 @@ Hello world!
 buf ptr: 0x000101ac
 buf: 1234
 ```
-If you would like to run test app on AliOS or Zephyr, we have embedded test sample into their OS image.
-For Zephyr, execute 
+If you would like to run test app on Zephyr, we have embedded test sample into its OS image. You need to execute 
 ```
 ninja run
 ```
 
-For AliOS, exeute
-```
-./out/helloworld@linuxhost/binary/helloworld@linuxhost.elf
-```
-
-As to Zephyr, AliOS and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
+As to Zephyr and other embedded platforms or IoT platforms, we highly recommand to extend WAMR to support WASM app dynamic loading from host or cloud, as shown in below sections. WAMR provided methodology and APIs which makes the extension easy. 
 For complete extension methodology, please read [WAMR extension guide](docs/iwasm_user_guide.docx).
 
 (WAMR extension samples will be open sourced soon)
