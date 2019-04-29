@@ -12,13 +12,13 @@ Feature
 
 Architecture
 =========================
-![](https://raw.github.com/luc/test/pics/architecture.png)
+![architecture](../pics/architecture.png)
 
 Run 
 =========================
 WAMR defined methodology and APIs to extend library, support app managment, extend to more language supppr, and enabled on more platforms.
 A typical extention architecure is as below:
-![](https://raw.github.com/luc/test/pics/architecture_future.png)
+![](https://raw.github.com/lucshi/test/pics/architecture_future.png)
 
 
 Extention 
