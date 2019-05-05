@@ -149,7 +149,6 @@ Below is the sample code for server WASM app which provide a room temperature me
 void on_init() 
 {
   /* register resource uri */
-  init_resource_register();
   api_register_resource_handler("/room_temp", room_temp_handler);
 }
 
