@@ -20,10 +20,13 @@ Architecture
 WAMR is basically consist of three portions, WASM runtime engine, memory management, messaging and micro service support module.
 
 <img src="./pics/architecture.PNG" width="80%" height="80%">
+ 
+  
+The core function of WAMR is loading and running WASM application binary from local, and WASM applicaiton execution starts from the main entry. Belowing sections are about how to build WAMR core and WASM app, as well as run the WASM app by loading into WASM core.
 
-Build WAMR
+Build WAMR Core
 =========================
-Please follow below instructions to build WAMR source code on different platforms.
+Please follow below instructions to build WAMR core on different platforms.
 
 Linux
 -------------------------
@@ -49,13 +52,6 @@ source ../../../zephyr-env.sh
 cmake -GNinja -DBOARD=qemu_x86 ..
 ninja
 ```
-
-Embed WAMR into software production
-==========
-
-WASM application library and extension
-=========
-
 
 Build WASM app
 =========================
@@ -122,138 +118,49 @@ If you would like to run test app on Zephyr, we have embedded test sample into i
 ninja run
 ```
 
-WAMR provided methodology and APIs which makes the extension easy. 
-For complete WAMR integration and extension methodology, please read [WAMR integration and extension guide](docs/WAMR_integration_extension_guide.docx).
+Embed WAMR into software production
+=====================================
+WAMR provided methodology to embed WAMR into your own software product, and defines APIs to enable software code (native) to invoke embedded WASM code.
+<img src="./pics/embed.PNG" width="60%" height="60%">
+The native code and WASM code execution flows are connected, but the stacks are seperated. WAMR enables the native code to invoke WASM code as invoking own native code transparently. Meanwhile WAMR guarantees the WASM code running inside sandbox.
 
-(WAMR extension samples will be open sourced soon)
-
-
-
-Programming models after integration
-=========================
-After extension, WAMR supports two typical programming models, micro service model and subscription model. Each WASM app runs in dedicate thread and they communicate in pure asynchronized style so there is no blocking operations. 
-- Single thread per WASM app instance
-- Event driven model
-- App must implement system callbacks on_init and on_destrory
-- Support timer
-- Micro service (Request/Response)
-- Pub/Sub
-- Support sensor
-
-
-Micro service model
--------------------------
-The micro service model is also referred as request and response model. One WASM app acts as server app which provides a specific service. Other WASM apps or host/cloud apps request from that service and get response.
-<img src="./pics/request.PNG" width="60%" height="60%">
-
-Below is the sample code for server WASM app which provide a room temperature measurement service. In this demo case, it always returns 26.5 centigrade.
-
+A typical WAMR APIs usage is as below:
 ``` C
-void on_init() 
-{
-  /* register resource uri */
-  api_register_resource_handler("/room_temp", room_temp_handler);
-}
+  wasm_module_t module;
+  wasm_module_inst_t inst;
+  wasm_function_inst_t func;
+  wasm_exec_env_t env;
+  wasm_runtime_init();
+  module = wasm_runtime_load(buffer, size, err, err_size);
+  inst = wasm_runtime_instantiate(module, 0, err, err_size);
+  func = wasm_runtime_lookup_function(inst, "fib", "(i32i32");
+  env = wasm_runtime_create_exec_env(stack_size);
 
-void on_destroy() 
-{
-}
+  if (!wasm_runtime_call_wasm(inst, env, func, 1, argv_buf) ) {
+          wasm_runtime_clear_exception(inst);
+    }
 
-void room_temp_handler(request_t *request)
-{
-  response_t response[1];
-  attr_container_t *payload;
-  payload = attr_container_create("room_temp payload");
-  if (payload == NULL)
-    return;
-
-  attr_container_set_string(&payload, "temp unit", "centigrade");
-  attr_container_set_float(&payload, "value", "26.5");
-
-  make_response_for_request(request, response);
-  set_response(response,
-          CONTENT_2_05,
-          FMT_ATTR_CONTAINER,
-          payload,
-          attr_container_get_serialize_length(payload));
-
-  api_response_send(response);
-  attr_container_destroy(payload);
-}
+  wasm_runtime_destory_exec_env(env);
+  wasm_runtime_deinstantiate(inst);
+  wasm_runtime_unload(module);
+  wasm_runtime_destroy();
 ```
 
 
-Subscription model
--------------------------
-The micro service model is also referred as monitor model. One WASM app acts as the event broadcaster. It broadcast events to WASM apps or host/cloud apps to notify their subscribed events occur.
-<img src="./pics/sub.PNG" width="60%" height="60%">
+WASM application library and extension
+=======================================
+WAMR provides a set of basic application APIs.There are 3 sources of APIs for programming the WASM application:
+- Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
+  - Libc APIs, which is the minimal Libc APIs like memory allocation and string copy etc. It is defined in lib/app-libs/libc/lib-base.h;
+  - Base library, which is the basic support like communication, timers and request/sub etc. It is defined is lib/app-libs/base/wasm_app.h;
+  - Extension library, which is a reference code of library extension. Currently we provide an example of extending library to support sensors, the header file lib/app-libs/extension/sensor/sensor.h. It is a reference implementation for board vendors.
+- 3rd party APIs: Programmer can download include any 3rd party C source code, and added into their own WASM app source tree.
+- Platform native APIs: The board vendors define these APIs during their making board firmware. They are provided WASM application to invoke like built-in and 3rd party APIs. In this way board vendors extend APIs which can make programmers develop more complicated WASM apps.
 
-Below is the sample code for a WASM publisher app which utilized a timer to repeat publish an overheat event to the subscriber apps. Subscriber apps receive the events immediately.
-
-``` C
-/* Subscriber app */
-void on_init() 
-{
-  api_subscribe_event (" alert/overheat", overheat_handler);
-}
-
-void on_destroy() 
-{
-}
-void overheat_handler(request_t *event)
-{
- printf(“Event: %s\n", event->url);
-}
-```
-``` C
-/* Publisher app */
-void timer_update(user_timer_t timer)
-{
-  attr_container_t *event;
-  printf("Timer update %d\n", num++);
- 
-  event = attr_container_create("event");
-  attr_container_set_string(&event, 
-          "warning", 
-          "temperature is over high");
-
-  api_publish_event("alert/overheat", 
-          FMT_ATTR_CONTAINER, 
-          event, 
-          attr_container_get_serialize_length(event));
-
-  attr_container_destroy(event);
-}
-
-void on_init() 
-{
-    user_timer_t timer;
-    timer = api_timer_create(1000, true, true, timer_update);
-}
-```
+<img src="./pics/extend_library.PNG" width="60%" height="60%">
 
 
-Dynamic firmware extension framework 
-=========================
-WAMR defined methodology and APIs to extend its library, support app managment, extend to more language suppport, and enabled on more platforms.
-A typical extension architecture is as below:
 
-- App manager is the component to install and uninstall WASM apps from host or cloud.
-- Communication is enabled inter WASM app as well as between WASM app and host/cloud
-- Runtime glue and API extension is a layer to easily integrate other runtime, e.g. Jerryscript, Intel Java micro runtime and Lua runtime etc. into WAMR
-<img src="./pics/architecture_extend.PNG" width="120%" height="120%">
-
-Typical dynamic app framework workflow
--------------------------
-Sensor hub firmware is an Intel companion chip connected with tons of sensors. It has limited resources and works in always on mode during main processor (host side) in deep sleep. WAMR is ported in sensor hub companion chip to make it intelligent to interact with end users according to environment changes, 7 days and 24 hours.
-Programmers follow below steps to finish their app development:
-- write WASM app code for firmware using C/C++ or other languages
-- compile and test
-- pack host app and WSAM app
-- deploy in host
-- host app installs WASM app onto device
-- WASM app filters and fuses sensor events and provide UI display and interaction
-<img src="./pics/workflow.PNG">
 
 
 Submit issues and request
