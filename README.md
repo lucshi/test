@@ -161,7 +161,7 @@ WAMR provides a set of basic application APIs.There are 3 sources of APIs for pr
 
 Part 1. Libc APIs.
 ---------------------
-The header files is “lib/app-libs/libc/lib-base.h”. The API set is listed as below:
+The header files is ```lib/app-libs/libc/lib-base.h```. The API set is listed as below:
 ``` C
 void *malloc(size_t size);
 void *calloc(size_t n, size_t size);
@@ -183,7 +183,7 @@ char *strncpy(char *dest, const char *src, unsigned long n);
 
 Part 2. Base library
 ----------------------
-The header files is “lib/app-libs/base/wasm-app.h”, it includes request and response APIs, event pub/sub APIs and timer APIs
+The header files is ```lib/app-libs/base/wasm-app.h```, it includes request and response APIs, event pub/sub APIs and timer APIs
 The API set is listed as below:
 ``` C
 typedef void(*request_handler_f)(request_t *) ;
@@ -212,7 +212,7 @@ void api_timer_restart(user_timer_t timer, int interval);
 
 Part 3. Library extension reference
 -------------------------------------
-Currently we provide an example of sensor, the header file lib/app-libs/extension/sensor/sensor.h, the API set is listed as below:
+Currently we provide an example of sensor, the header file ```lib/app-libs/extension/sensor/sensor.h```, the API set is listed as below:
 ``` C
 sensor_t sensor_open(const char* name, int index,
                                      void(*on_sensor_event)(sensor_t, attr_container_t *, void *),
@@ -232,7 +232,7 @@ WAMR implemented a framework for developers to export APIs. The procedure to exp
 - Step 1. Create a header file
 Declare the APIs for WASM application source project to include.
 - Step 2. Create a source file
-Export the platform APIs, for example in ``` C products/linux/ext-lib-export.c ```
+Export the platform APIs, for example in ``` products/linux/ext-lib-export.c ```
 ``` C
 #include "lib-export.h"
 
@@ -244,7 +244,7 @@ static NativeSymbol extended_native_symbol_defs[] =
 ```
 
 - Step 3. Register new APIs
-Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of extended_native_symbol_defs.
+Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of ```extended_native_symbol_defs```.
 The pre-defined two MACROs below should be used to declare a function export:
 ``` c
 #define EXPORT_WASM_API(symbol)  {#symbol, symbol}
