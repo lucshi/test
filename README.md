@@ -159,7 +159,170 @@ WAMR provides a set of basic application APIs.There are 3 sources of APIs for pr
 
 <img src="./pics/extend_library.PNG" width="60%" height="60%">
 
+Part 1. Libc APIs.
+---------------------
+The header files is “lib/app-libs/libc/lib-base.h”. The API set is listed as below:
+``` C
+void *malloc(size_t size);
+void *calloc(size_t n, size_t size);
+void free(void *ptr);
+int memcmp(const void *s1, const void *s2, size_t n);
+void *memcpy(void *dest, const void *src, size_t n);
+void *memmove(void *dest, const void *src, size_t n);
+void *memset(void *s, int c, size_t n);
+int putchar(int c);
+int snprintf(char *str, size_t size, const char *format, ...);
+int sprintf(char *str, const char *format, ...);
+char *strchr(const char *s, int c);
+int strcmp(const char *s1, const char *s2);
+char *strcpy(char *dest, const char *src);
+size_t strlen(const char *s);
+int strncmp(const char * str1, const char * str2, size_t n);
+char *strncpy(char *dest, const char *src, unsigned long n);
+```
 
+Part 2. Base library
+----------------------
+The header files is “lib/app-libs/base/wasm-app.h”, it includes request and response APIs, event pub/sub APIs and timer APIs
+The API set is listed as below:
+``` C
+typedef void(*request_handler_f)(request_t *) ;
+typedef void(*response_handler_f)(response_t *, void *) ;
+
+// Request APIs
+void init_resource_register();
+
+bool api_register_resource_handler(const char *url, request_handler_f);
+void api_send_request(request_t * request, response_handler_f response_handler, void * user_data);
+void api_response_send(response_t *response);
+
+// event API
+bool api_publish_event(const char *url,  int fmt, void *payload,  int payload_len);
+bool api_subscribe_event(const char * url, request_handler_f handler);
+
+struct user_timer;
+typedef struct user_timer * user_timer_t;
+
+// Timer APIs
+user_timer_t api_timer_create(int interval, bool is_period, bool auto_start, void(*on_user_timer_update)(user_timer_t
+));
+void api_timer_cancel(user_timer_t timer);
+void api_timer_restart(user_timer_t timer, int interval);
+```
+
+Part 3. Library extension reference
+-------------------------------------
+Currently we provide an example of sensor, the header file lib/app-libs/extension/sensor/sensor.h, the API set is listed as below:
+``` C
+sensor_t sensor_open(const char* name, int index,
+                                     void(*on_sensor_event)(sensor_t, attr_container_t *, void *),
+                                     void *user_data);
+bool sensor_config(sensor_t sensor, int interval, int bit_cfg, int delay);
+bool sensor_config_with_attr_container(sensor_t sensor, attr_container_t *cfg);
+bool sensor_close(sensor_t sensor);
+```
+
+APIs extension steps
+---------------------
+API extension means to export new “Platform API” to WASM apps, to develop more complicated WASM application for this platform. “Platform API” can be any function defined by the platform OS or the board firmware code. 
+
+[Security attention] The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
+
+WAMR implemented a framework for developers to export APIs. The procedure to expose the platform APIs in three steps:
+- Step 1. Create a header file
+Declare the APIs for WASM application source project to include.
+- Step 2. Create a source file
+Export the platform APIs, for example in ``` C products/linux/ext-lib-export.c ```
+``` C
+#include "lib-export.h"
+
+static NativeSymbol extended_native_symbol_defs[] =
+{
+};
+
+#include "ext-lib-export.h"
+```
+
+- Step 3. Register new APIs
+Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of extended_native_symbol_defs.
+The pre-defined two MACROs below should be used to declare a function export:
+``` c
+#define EXPORT_WASM_API(symbol)  {#symbol, symbol}
+#define EXPORT_WASM_API2(symbol) {#symbol, symbol_##wrapper}
+
+The type of array extended_native_symbol_defs[] is defined as  below:
+typedef struct NativeSymbol {
+  const char *symbol;
+  void *func_ptr;
+} NativeSymbol;
+```
+
+Below code example shows how to extend the library to support GPIO pin operations on Zephyr OS:
+``` C
+//lib-export-impl.c
+#include <zephyr.h>
+#include <kernel.h>
+#include <gpio.h>
+static void customized()
+{
+   // your code
+}
+static int
+gpio_pin_configure_wrapper(struct device *port, u32_t pin, int flags)
+{
+    return gpio_pin_configure(port, pin, flags); // a Zephyr OS API
+}
+
+
+// lib-export-dec.h
+#ifndef _LIB_EXPORT_DEC_H_
+#define _LIB_EXPORT_DEC_H_
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void customized();
+int gpio_pin_configure_wrapper(struct device *port, u32_t pin, int flags);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+
+
+// ext-lib-export.c
+#include "lib-export.h"
+#include "lib-export-dec.h"
+
+static NativeSymbol extended_native_symbol_defs[] =
+{
+  EXPORT_WASM_API(customized),
+  EXPORT_WASM_API2(gpio_pin_configure)
+};
+
+#include "ext-lib-export.h"
+```
+Use extended library
+------------------------
+In the application source project, it includes the WAMR built-in APIs header file and platform extension header files.
+Assume the board vendor extend the library which added a API called customized(). The WASM application would be like this:
+``` C
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdlib.h>
+#include <stdlib.h>
+#include “lib-base.h”           // provided by WAMR
+#include “lib-export-dec.h” // provided by platform vendor
+
+int main(int argc, char **argv)
+{
+  int I;
+  char *buf = “abcd”;
+  i = strlen(buf);                   // common API provided by WAMR
+  customized();                   // customized API provided by platform vendor
+  return i;
+}
+```
 
 
 
