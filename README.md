@@ -1,12 +1,16 @@
 WebAssembly Micro Runtime
 =========================
-WebAssembly Micro Runtime (WAMR) is a small footprint and standalone WebAssembly (WASM) runtime. By default it supports running WASM binary on resource restricted (low as 150KB total memory) devices.
+WebAssembly Micro Runtime (WAMR) is a small footprint and standalone WebAssembly (WASM) runtime. It provides a framework for dynamic WASM application management.
 
 Features
 =========================
+- WASM interpreter (AOT is planned)
+- Provide built-in Libc subset, support side_module=1 EMCC compilation option only
+- Provide APIs for embedding runtime into production software
+- Provide mechanism for exporting native APIs to WASM applications
 - Support programming firmware apps in multi languages (C/C++/Java/Rust/Go/TypeScript etc.)
 - App sandbox execution environment on embedded OS
-- Pure asynchronized communication
+- Pure asynchronized programming model
 - Menu configuration for easy platform integration
 - Support micro service and pub-sub event inter-app communication models
 - Easy to extend to support remote FW application management from host or cloud
@@ -19,7 +23,7 @@ WAMR is basically consist of three portions, WASM runtime engine, memory managem
 
 Build WAMR
 =========================
-WAMR currently supports Linux, AliOS and Zephyr (a real time OS) platforms. Please follow below instructions to build WAMR source code on different platforms.
+Please follow below instructions to build WAMR source code on different platforms.
 
 Linux
 -------------------------
@@ -46,6 +50,13 @@ cmake -GNinja -DBOARD=qemu_x86 ..
 ninja
 ```
 
+Embed WAMR into software production
+==========
+
+WASM application library and extension
+=========
+
+
 Build WASM app
 =========================
 A popular method to build out WASM binary is to use ```emcc```. 
@@ -57,6 +68,8 @@ emsdk activate latest
 ```
 add ```./emsdk_env.sh``` into path to ease future use, or source it everytime.
 Emscripten website provides other installtion method beyond Linux.
+
+todo: user should copy the app-libs folder into project and include and build.
 
 You can write a simple ```test.c```as the first sample.
 ``` C
@@ -109,21 +122,11 @@ If you would like to run test app on Zephyr, we have embedded test sample into i
 ninja run
 ```
 
-As to Zephyr and other embedded platforms or IoT platforms, we highly recommand to integrate WAMR into your own framework such as dynamic app loading framework which loads WASM apps from host or cloud and execute them inside WAMR.
 WAMR provided methodology and APIs which makes the extension easy. 
 For complete WAMR integration and extension methodology, please read [WAMR integration and extension guide](docs/WAMR_integration_extension_guide.docx).
 
 (WAMR extension samples will be open sourced soon)
 
-Integrate WAMR into the app framework 
-=========================
-WAMR defined methodology and APIs to extend its library, support app managment, extend to more language suppport, and enabled on more platforms.
-A typical extension architecture is as below:
-
-- App manager is the component to install and uninstall WASM apps from host or cloud.
-- Communication is enabled inter WASM app as well as between WASM app and host/cloud
-- Runtime glue and API extension is a layer to easily integrate other runtime, e.g. Jerryscript, Intel Java micro runtime and Lua runtime etc. into WAMR
-<img src="./pics/architecture_extend.PNG" width="120%" height="120%">
 
 
 Programming models after integration
@@ -229,6 +232,16 @@ void on_init()
 }
 ```
 
+
+Dynamic firmware extension framework 
+=========================
+WAMR defined methodology and APIs to extend its library, support app managment, extend to more language suppport, and enabled on more platforms.
+A typical extension architecture is as below:
+
+- App manager is the component to install and uninstall WASM apps from host or cloud.
+- Communication is enabled inter WASM app as well as between WASM app and host/cloud
+- Runtime glue and API extension is a layer to easily integrate other runtime, e.g. Jerryscript, Intel Java micro runtime and Lua runtime etc. into WAMR
+<img src="./pics/architecture_extend.PNG" width="120%" height="120%">
 
 Typical dynamic app framework workflow
 -------------------------
