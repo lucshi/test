@@ -147,8 +147,7 @@ A typical WAMR APIs usage is as below:
 ```
 
 
-WASM application library and extension
-=======================================
+#WASM application library and extension
 WAMR provides a set of basic application APIs.There are 3 sources of APIs for programming the WASM application:
 - Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
   - Libc APIs, which is the minimal Libc APIs like memory allocation and string copy etc. It is defined in lib/app-libs/libc/lib-base.h;
@@ -158,9 +157,8 @@ WAMR provides a set of basic application APIs.There are 3 sources of APIs for pr
 - Platform native APIs: The board vendors define these APIs during their making board firmware. They are provided WASM application to invoke like built-in and 3rd party APIs. In this way board vendors extend APIs which can make programmers develop more complicated WASM apps.
 
 <img src="./pics/extend_library.PNG" width="60%" height="60%">
-
-Part 1. Libc APIs.
----------------------
+##second
+###Part 1. Libc APIs.
 The header files is ```lib/app-libs/libc/lib-base.h```. The API set is listed as below:
 ``` C
 void *malloc(size_t size);
