@@ -253,6 +253,7 @@ static NativeSymbol extended_native_symbol_defs[] = {
 ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) **Security attention:** The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
 
 WAMR implemented a framework for developers to export APIs. The procedure to expose the platform APIs in three steps:
+
 **Step 1. Create a header file**<br/>
 Declare the APIs for WASM application source project to include.
 
