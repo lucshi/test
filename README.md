@@ -158,7 +158,7 @@ In general, WAMR provides 3 levels of APIs for programming the WASM application:
 
 <img src="./pics/extend_library.PNG" width="60%" height="60%">
 
-Built-in APIs
+Built-in application library
 ---------------
 Built-in APIs include Libc APIs, Base library, Extension library reference.
 
