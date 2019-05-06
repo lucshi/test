@@ -152,7 +152,7 @@ A typical WAMR APIs usage is as below:
 WASM application library and extension
 ========================================
 In general, WAMR provides 3 levels of APIs for programming the WASM application:
-- Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
+- Built-in APIs: WAMR has already provided a minimal API set for developers. 
 - 3rd party APIs: Programmer can download include any 3rd party C source code, and added into their own WASM app source tree.
 - Platform native APIs: The board vendors define these APIs during their making board firmware. They are provided WASM application to invoke like built-in and 3rd party APIs. In this way board vendors extend APIs which can make programmers develop more complicated WASM apps.
 
@@ -160,7 +160,7 @@ In general, WAMR provides 3 levels of APIs for programming the WASM application:
 
 Built-in APIs
 ---------------
-Built-in APIs include Libc APIs, Base library, Extension library.
+Built-in APIs include Libc APIs, Base library, Extension library reference.
 
 **Libc APIs**<br/>
 It is the minimal Libc APIs like memory allocation and string copy etc.
@@ -185,7 +185,7 @@ char *strncpy(char *dest, const char *src, unsigned long n);
 ```
 
 **Base library**<br/>
-the basic support like communication, timers etc. The header files is ```lib/app-libs/base/wasm-app.h```, it includes request and response APIs, event pub/sub APIs and timer APIs
+the basic support like communication, timers etc. The header files is ```lib/app-libs/base/wasm-app.h```, it includes request and response APIs, event pub/sub APIs and timer APIs. Please be noted that they may not work if you have no corresponding framework to work with them.
 The API set is listed as below:
 ``` C
 typedef void(*request_handler_f)(request_t *) ;
