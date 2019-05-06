@@ -19,7 +19,7 @@ Architecture
 =========================
 WAMR is basically consist of three portions, WASM runtime engine, memory management, messaging and micro service support module.
 
-<img src="./pics/architecture.PNG" width="100%" height="100%">
+<img src="./pics/architecture.PNG" width="80%" height="80%">
  
   
 The core function of WAMR is loading and running WASM application binary from local, and WASM applicaiton execution starts from the main entry. Belowing sections are about how to build WAMR core and WASM app, as well as run the WASM app by loading into WASM core.
@@ -235,7 +235,7 @@ There are several limitations during library extending for safe consideration:
 
 Below is a sample of library extension. All invoke across WASM world and native world must be serialized and de-serialized, and native world must do boundary check for every incoming address from WASM world.
 
-<img src="./pics/safe.PNG" width="60%" height="60%">
+<img src="./pics/safe.PNG" width="100%" height="100%">
 
 WAMR implements a base API for timer and messaging by using `EXPORT_WASM_API`. They are good reference of extending library.
 ``` C
