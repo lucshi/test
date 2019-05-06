@@ -207,7 +207,7 @@ void api_timer_cancel(user_timer_t timer);
 void api_timer_restart(user_timer_t timer, int interval);
 ```
 
-**Library extension reference**
+**Library extension reference**\
 Currently we provide an example of sensor, the header file ```lib/app-libs/extension/sensor/sensor.h```, the API set is listed as below:
 ``` C
 sensor_t sensor_open(const char* name, int index,
@@ -222,13 +222,13 @@ APIs extension steps
 ---------------------
 API extension means to export new “Platform API” to WASM apps, to develop more complicated WASM application for this platform. “Platform API” can be any function defined by the platform OS or the board firmware code. 
 
-<span style="color:red">some Security attention text</span>The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
+![#f03c15](https://placehold.it/15/f03c15/000000?text=+) `#f03c15` Security attention: The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
 
 WAMR implemented a framework for developers to export APIs. The procedure to expose the platform APIs in three steps:
-**Step 1. Create a header file**
+**Step 1. Create a header file**\
 Declare the APIs for WASM application source project to include.
 
-**Step 2. Create a source file**
+**Step 2. Create a source file**\
 Export the platform APIs, for example in ``` products/linux/ext-lib-export.c ```
 ``` C
 #include "lib-export.h"
@@ -240,7 +240,7 @@ static NativeSymbol extended_native_symbol_defs[] =
 #include "ext-lib-export.h"
 ```
 
-**Step 3. Register new APIs**
+**Step 3. Register new APIs**\
 Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of ```extended_native_symbol_defs```.
 The pre-defined two MACROs below should be used to declare a function export:
 ``` c
