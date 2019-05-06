@@ -150,16 +150,15 @@ A typical WAMR APIs usage is as below:
 WASM application library and extension
 ========================================
 WAMR provides a set of basic application APIs.There are 3 sources of APIs for programming the WASM application:
-- Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
-  - Libc APIs, which is the minimal Libc APIs like memory allocation and string copy etc. It is defined in lib/app-libs/libc/lib-base.h;
-  - Base library, which is the basic support like communication, timers and request/sub etc. It is defined is lib/app-libs/base/wasm_app.h;
-  - Extension library, which is a reference code of library extension. Currently we provide an example of extending library to support sensors, the header file lib/app-libs/extension/sensor/sensor.h. It is a reference implementation for board vendors.
-- 3rd party APIs: Programmer can download include any 3rd party C source code, and added into their own WASM app source tree.
-- Platform native APIs: The board vendors define these APIs during their making board firmware. They are provided WASM application to invoke like built-in and 3rd party APIs. In this way board vendors extend APIs which can make programmers develop more complicated WASM apps.
+1.Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
+  1.Libc APIs, which is the minimal Libc APIs like memory allocation and string copy etc. It is defined in lib/app-libs/libc/lib-base.h;
+  1.Base library, which is the basic support like communication, timers and request/sub etc. It is defined is lib/app-libs/base/wasm_app.h;
+  1.Extension library, which is a reference code of library extension. Currently we provide an example of extending library to support sensors, the header file lib/app-libs/extension/sensor/sensor.h. It is a reference implementation for board vendors.
+1.3rd party APIs: Programmer can download include any 3rd party C source code, and added into their own WASM app source tree.
+1.Platform native APIs: The board vendors define these APIs during their making board firmware. They are provided WASM application to invoke like built-in and 3rd party APIs. In this way board vendors extend APIs which can make programmers develop more complicated WASM apps.
 
 <img src="./pics/extend_library.PNG" width="60%" height="60%">
-##second
-Part 1. Libc APIs.
+**Libc APIs**
 The header files is ```lib/app-libs/libc/lib-base.h```. The API set is listed as below:
 ``` C
 void *malloc(size_t size);
@@ -180,8 +179,7 @@ int strncmp(const char * str1, const char * str2, size_t n);
 char *strncpy(char *dest, const char *src, unsigned long n);
 ```
 
-Part 2. Base library
-----------------------
+**Base library**
 The header files is ```lib/app-libs/base/wasm-app.h```, it includes request and response APIs, event pub/sub APIs and timer APIs
 The API set is listed as below:
 ``` C
@@ -209,8 +207,7 @@ void api_timer_cancel(user_timer_t timer);
 void api_timer_restart(user_timer_t timer, int interval);
 ```
 
-Part 3. Library extension reference
--------------------------------------
+**Library extension reference**
 Currently we provide an example of sensor, the header file ```lib/app-libs/extension/sensor/sensor.h```, the API set is listed as below:
 ``` C
 sensor_t sensor_open(const char* name, int index,
@@ -225,12 +222,13 @@ APIs extension steps
 ---------------------
 API extension means to export new “Platform API” to WASM apps, to develop more complicated WASM application for this platform. “Platform API” can be any function defined by the platform OS or the board firmware code. 
 
-\*\*<span style="color:blue">Security attention</span>*\*\The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
+<span style="color:red">some Security attention text</span>The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
 
 WAMR implemented a framework for developers to export APIs. The procedure to expose the platform APIs in three steps:
-- Step 1. Create a header file
+**Step 1. Create a header file**
 Declare the APIs for WASM application source project to include.
-- Step 2. Create a source file
+
+**Step 2. Create a source file**
 Export the platform APIs, for example in ``` products/linux/ext-lib-export.c ```
 ``` C
 #include "lib-export.h"
@@ -242,7 +240,7 @@ static NativeSymbol extended_native_symbol_defs[] =
 #include "ext-lib-export.h"
 ```
 
-- Step 3. Register new APIs
+**Step 3. Register new APIs**
 Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of ```extended_native_symbol_defs```.
 The pre-defined two MACROs below should be used to declare a function export:
 ``` c
