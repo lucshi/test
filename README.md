@@ -274,13 +274,6 @@ The pre-defined MACRO `EXPORT_WASM_API` should be used to declare a function exp
 ``` c
 #define EXPORT_WASM_API(symbol)  {#symbol, symbol}
 ```
-The type of array `extended_native_symbol_defs[]` is defined as below:
-``` C
-typedef struct NativeSymbol {
-  const char *symbol;
-  void *func_ptr;
-} NativeSymbol;
-```
 
 Below code example shows how to extend the library to support `customeized()`:
 ``` C
@@ -312,7 +305,7 @@ void customized();
 
 static NativeSymbol extended_native_symbol_defs[] =
 {
-  EXPORT_WASM_API(customized),
+  EXPORT_WASM_API(customized)
 };
 
 #include "ext-lib-export.h"
