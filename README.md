@@ -270,12 +270,11 @@ static NativeSymbol extended_native_symbol_defs[] =
 
 **Step 3. Register new APIs**<br/>
 Use macro EXPORT_WASM_API and EXPORT_WASM_API2 to add exported APIs into the array of ```extended_native_symbol_defs```.
-The pre-defined two MACROs below should be used to declare a function export:
+The pre-defined MACRO `EXPORT_WASM_API` should be used to declare a function export:
 ``` c
 #define EXPORT_WASM_API(symbol)  {#symbol, symbol}
-#define EXPORT_WASM_API2(symbol) {#symbol, symbol##_wrapper}
 ```
-The type of array `extended_native_symbol_defs[]` is defined as  below:
+The type of array `extended_native_symbol_defs[]` is defined as below:
 ``` C
 typedef struct NativeSymbol {
   const char *symbol;
@@ -283,20 +282,12 @@ typedef struct NativeSymbol {
 } NativeSymbol;
 ```
 
-Below code example shows how to extend the library to support GPIO pin operations on Zephyr OS:
+Below code example shows how to extend the library to support `customeized()`:
 ``` C
 //lib-export-impl.c
-#include <zephyr.h>
-#include <kernel.h>
-#include <gpio.h>
-static void customized()
+void customized()
 {
    // your code
-}
-static int
-gpio_pin_configure_wrapper(struct device *port, u32_t pin, int flags)
-{
-    return gpio_pin_configure(port, pin, flags); // a Zephyr OS API
 }
 
 
@@ -308,7 +299,6 @@ extern "C" {
 #endif
 
 void customized();
-int gpio_pin_configure(struct device *port, u32_t pin, int flags);
 
 #ifdef __cplusplus
 }
@@ -323,7 +313,6 @@ int gpio_pin_configure(struct device *port, u32_t pin, int flags);
 static NativeSymbol extended_native_symbol_defs[] =
 {
   EXPORT_WASM_API(customized),
-  EXPORT_WASM_API2(gpio_pin_configure)
 };
 
 #include "ext-lib-export.h"
@@ -334,17 +323,12 @@ In the application source project, it includes the WAMR built-in APIs header fil
 Assume the board vendor extend the library which added a API called customized(). The WASM application would be like this:
 ``` C
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdlib.h>
-#include <stdlib.h>
-#include “lib-base.h”           // provided by WAMR
-#include “lib-export-dec.h” // provided by platform vendor
+#include "lib-export-dec.h" // provided by platform vendor
 
 int main(int argc, char **argv)
 {
   int I;
   char *buf = “abcd”;
-  i = strlen(buf);                   // common API provided by WAMR
   customized();                   // customized API provided by platform vendor
   return i;
 }
