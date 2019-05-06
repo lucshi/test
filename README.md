@@ -147,7 +147,8 @@ A typical WAMR APIs usage is as below:
 ```
 
 
-#WASM application library and extension
+WASM application library and extension
+========================================
 WAMR provides a set of basic application APIs.There are 3 sources of APIs for programming the WASM application:
 - Built-in APIs: WAMR has already provided a minimal API set for developers. The minimal API includes:
   - Libc APIs, which is the minimal Libc APIs like memory allocation and string copy etc. It is defined in lib/app-libs/libc/lib-base.h;
@@ -158,7 +159,7 @@ WAMR provides a set of basic application APIs.There are 3 sources of APIs for pr
 
 <img src="./pics/extend_library.PNG" width="60%" height="60%">
 ##second
-###Part 1. Libc APIs.
+Part 1. Libc APIs.
 The header files is ```lib/app-libs/libc/lib-base.h```. The API set is listed as below:
 ``` C
 void *malloc(size_t size);
@@ -224,7 +225,7 @@ APIs extension steps
 ---------------------
 API extension means to export new “Platform API” to WASM apps, to develop more complicated WASM application for this platform. “Platform API” can be any function defined by the platform OS or the board firmware code. 
 
-[Security attention] The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
+\*\*<span style="color:blue">Security attention</span>*\*\The WebAssembly application is supposed to access its own memory space. If the exposed platform API includes the pointers to system memory space which out of the app memory space, the integrator should carefully design some wrapper function to ensure the memory boundary is not broken.
 
 WAMR implemented a framework for developers to export APIs. The procedure to expose the platform APIs in three steps:
 - Step 1. Create a header file
