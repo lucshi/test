@@ -30,6 +30,13 @@ Please follow below instructions to build WAMR core on different platforms.
 
 Linux
 -------------------------
+Firstly please install library dependencies of lib gcc.
+Use below installation commands for Ubuntu Linux: 
+``` Bash
+sudo apt install lib32gcc-5-dev
+sudo apt-get install g++-multilib
+```
+After installing dependencies, build the source code:
 ``` Bash
 cd products/linux/
 mkdir build
@@ -327,8 +334,9 @@ int main(int argc, char **argv)
   return i;
 }
 ```
-
-
+Comming soon...
+========================
+We are preparing the open source for application manager and related cool samples like inter-application communication, application life cycle management, 2D graphic demo and more. You will get updated soon.
 
 Submit issues and request
 =========================
